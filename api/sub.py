@@ -6,7 +6,7 @@ from urllib.parse import urlparse, parse_qs
 # Ссылка на твои сервера
 GIST_URL = "https://gist.githubusercontent.com/matvei-droid/8f4b0f87c5b18011a55490fcac60f57f/raw/26ab2ed6884ff4223cc0e1f1a3566525821269ac/serverv.txt"
 # ПРЯМАЯ RAW ССЫЛКА НА ТВОЙ users.json
-USERS_URL = "https://raw.githubusercontent.com/matvei-droid/zuubackvpn//api/users.json"
+USERS_URL = "https://raw.githubusercontent.com/matvei-droid/zuubackvpn/main/api/users.json"
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
