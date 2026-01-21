@@ -1,0 +1,5 @@
+{
+  "matvei": {"status": "active", "limit_gb": 100, "expires": "2026-12-31"},
+  "friend1": {"status": "banned", "limit_gb": 0, "expires": "2025-01-01"},
+  "guest": {"status": "active", "limit_gb": 5, "expires": "2026-02-01"}
+}
