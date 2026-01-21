@@ -1,6 +1,6 @@
 {
   "matvei": {"status": "active", "limit_gb": 100, "expires": "2026-12-31"},
-  "friend1": {"status": "banned", "limit_gb": 0, "expires": "2025-01-01"},
+  "test": {"status": "active", "limit_gb": 0, "expires": "2025-01-01"},
   "uouc8s12": {"status": "active", "limit_gb": 100, "expires": "2026-12-01"}
 }
 
