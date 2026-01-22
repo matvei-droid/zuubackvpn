@@ -19,7 +19,7 @@ class handler(BaseHTTPRequestHandler):
             if r.status_code != 200:
                 self.send_response(200)
                 self.end_headers()
-                self.wfile.write(b"User Error")
+                self.wfile.write(b"Error: User not found")
                 return
 
             js = r.json()
@@ -34,30 +34,28 @@ class handler(BaseHTTPRequestHandler):
             exp_ts = int(datetime.strptime(user.get("expires", "2026-12-31"), "%Y-%m-%d").timestamp())
             total_bytes = int(user.get("limit_gb", 100)) * 1024 * 1024 * 1024
 
-            # Получаем сервера
             servers = requests.get(GIST).text
             
-            # ФОРМИРУЕМ СТРУКТУРУ, КОТОРАЯ БЛОКИРУЕТ ИНТЕРФЕЙС
-            config = {
-                "execute_config": {
-                    "is_locked": True,
-                    "hide_settings": True
-                },
-                "metadata": {
-                    "profile_title": "zuubackvpn",
-                    "subscription_url": f"https://{self.headers.get('Host')}{self.path}"
-                },
-                "content": servers # Твои ссылки
-            }
+            # Формируем конфиг, который Hiddify обязан скрыть
+            config_text = (
+                f"#profile-title: zuubackvpn\n"
+                f"#profile-update-interval: 1\n"
+                f"#profile-config: {{\"hide_settings\":true,\"hide-user-names\":true}}\n"
+                f"DNS: 1.1.1.1\n\n"
+                f"{servers}"
+            )
+
+            # Кодируем ВСЁ в Base64, чтобы приложение не видело открытых ссылок
+            b64_content = base64.b64encode(config_text.encode('utf-8')).decode('utf-8')
 
             self.send_response(200)
-            # ВАЖНО: Указываем приложению, что это JSON конфиг
-            self.send_header('Content-type', 'application/json; charset=utf-8')
+            # Указываем, что это закодированный файл подписки
+            self.send_header('Content-type', 'text/plain; charset=utf-8')
             self.send_header('Profile-Config', '{"hide_settings":true}')
             self.send_header('Subscription-Userinfo', f"upload=0; download=0; total={total_bytes}; expire={exp_ts}")
             self.end_headers()
             
-            self.wfile.write(json.dumps(config).encode('utf-8'))
+            self.wfile.write(b64_content.encode('utf-8'))
         except:
             self.send_response(500)
             self.end_headers()
