@@ -43,5 +43,10 @@
     "status": "active",
     "expire": "2026-01-23",
     "total": 10737418240
+  },
+  "jorka": {
+    "expires": "2026-01-23",
+    "limit_gb": 100,
+    "status": "active"
   }
 }
