@@ -53,5 +53,10 @@
     "expires": "2026-01-23",
     "limit_gb": 100,
     "status": "active"
+  },
+  "jora": {
+    "expires": "2026-01-23",
+    "limit_gb": 100,
+    "status": "active"
   }
 }
