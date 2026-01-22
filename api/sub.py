@@ -17,9 +17,9 @@ class handler(BaseHTTPRequestHandler):
                              headers={"Authorization": f"token {TOKEN}"})
             
             if r.status_code != 200:
-                self.send_response(r.status_code)
+                self.send_response(200)
                 self.end_headers()
-                self.wfile.write(f"Error: {r.status_code}".encode())
+                self.wfile.write(b"Error: User not found")
                 return
 
             js = r.json()
@@ -27,32 +27,35 @@ class handler(BaseHTTPRequestHandler):
             user = data.get(user_name)
 
             if not user or user.get("status") != "active":
-                self.send_error(403, "Forbidden")
+                self.send_response(403)
+                self.end_headers()
                 return
 
             exp_ts = int(datetime.strptime(user.get("expires", "2026-12-31"), "%Y-%m-%d").timestamp())
             total_bytes = int(user.get("limit_gb", 100)) * 1024 * 1024 * 1024
 
-            # 1. Получаем сервера
             servers = requests.get(GIST).text
             
-            # 2. Формируем текстовый конфиг
+            # Формируем конфиг, который Hiddify обязан скрыть
             config_text = (
-                "#profile-title: VPN\n"
-                "#profile-update-interval: 1\n"
-                "#profile-config: {\"hide_settings\":true}\n\n"
-            ) + servers
+                f"#profile-title: zuubackvpn\n"
+                f"#profile-update-interval: 1\n"
+                f"#profile-config: {{\"hide_settings\":true,\"hide-user-names\":true}}\n"
+                f"DNS: 1.1.1.1\n\n"
+                f"{servers}"
+            )
 
-            # 3. КОДИРУЕМ В BASE64 (Это уберет галочки 100%)
+            # Кодируем ВСЁ в Base64, чтобы приложение не видело открытых ссылок
             b64_content = base64.b64encode(config_text.encode('utf-8')).decode('utf-8')
 
             self.send_response(200)
+            # Указываем, что это закодированный файл подписки
             self.send_header('Content-type', 'text/plain; charset=utf-8')
             self.send_header('Profile-Config', '{"hide_settings":true}')
             self.send_header('Subscription-Userinfo', f"upload=0; download=0; total={total_bytes}; expire={exp_ts}")
             self.end_headers()
             
-            # Отправляем закодированные данные
             self.wfile.write(b64_content.encode('utf-8'))
         except:
-            self.send_error(500)
+            self.send_response(500)
+            self.end_headers()
