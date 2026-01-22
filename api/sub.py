@@ -6,7 +6,7 @@ from urllib.parse import urlparse, parse_qs
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
         # ВСТАВЬ СЮДА НОВЫЙ ТОКЕН
-        TOKEN = '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' 
+        TOKEN = 'ghpEZpkXijO8xaqjwcrVr3CbrpBjJcR2o2jAbcx'
         REPO = 'matvei-droid/zuubackvpn'
         FILE = 'api/users.json'
         GIST = 'https://gist.githubusercontent.com/matvei-droid/8f4b0f87c5b18011a55490fcac60f57f/raw/serverv.txt'
