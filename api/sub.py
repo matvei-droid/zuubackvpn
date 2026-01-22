@@ -5,7 +5,6 @@ from urllib.parse import urlparse, parse_qs
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
-        # TOKEN БЕРЕТСЯ ИЗ НАСТРОЕК VERCEL
         TOKEN = os.getenv('MY_GITHUB_TOKEN') 
         REPO = 'matvei-droid/zuubackvpn'
         FILE = 'api/users.json'
@@ -34,17 +33,18 @@ class handler(BaseHTTPRequestHandler):
             exp_ts = int(datetime.strptime(user.get("expires", "2026-12-31"), "%Y-%m-%d").timestamp())
             total_bytes = int(user.get("limit_gb", 100)) * 1024 * 1024 * 1024
 
-            # Получаем список серверов
+            # 1. Получаем сервера
             servers = requests.get(GIST).text
             
-            # ФОРМИРУЕМ КОНФИГ СО СКРЫТИЕМ
-            # Эти строки заставят Hiddify спрятать стрелочки настроек
-            config_lines = (
+            # 2. Формируем текстовый конфиг
+            config_text = (
                 "#profile-title: VPN\n"
                 "#profile-update-interval: 1\n"
                 "#profile-config: {\"hide_settings\":true}\n\n"
-            )
-            final_content = config_lines + servers
+            ) + servers
+
+            # 3. КОДИРУЕМ В BASE64 (Это уберет галочки 100%)
+            b64_content = base64.b64encode(config_text.encode('utf-8')).decode('utf-8')
 
             self.send_response(200)
             self.send_header('Content-type', 'text/plain; charset=utf-8')
@@ -52,7 +52,7 @@ class handler(BaseHTTPRequestHandler):
             self.send_header('Subscription-Userinfo', f"upload=0; download=0; total={total_bytes}; expire={exp_ts}")
             self.end_headers()
             
-            # Отправляем обновленный контент
-            self.wfile.write(final_content.encode('utf-8'))
+            # Отправляем закодированные данные
+            self.wfile.write(b64_content.encode('utf-8'))
         except:
             self.send_error(500)
