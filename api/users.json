@@ -73,5 +73,10 @@
     "expires": "2026-01-23",
     "limit_gb": 100,
     "status": "active"
+  },
+  "uuee": {
+    "expires": "2026-01-23",
+    "limit_gb": 100,
+    "status": "active"
   }
 }
