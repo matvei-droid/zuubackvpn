@@ -63,5 +63,10 @@
     "expires": "2026-01-23",
     "limit_gb": 100,
     "status": "active"
+  },
+  "y": {
+    "expires": "2026-01-27",
+    "limit_gb": 100,
+    "status": "active"
   }
 }
