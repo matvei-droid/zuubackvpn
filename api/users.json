@@ -28,5 +28,10 @@
     "status": "active",
     "expire": "2026-02-21",
     "total": 10737418240
+  },
+  "\u043a\u0443\u0441": {
+    "status": "active",
+    "expire": "2026-02-03",
+    "total": 10737418240
   }
 }
