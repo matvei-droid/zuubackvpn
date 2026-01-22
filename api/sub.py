@@ -37,6 +37,7 @@ class handler(BaseHTTPRequestHandler):
             servers = requests.get(GIST).text
             self.send_response(200)
             self.send_header('Content-type', 'text/plain; charset=utf-8')
+            self.send_header('Profile-Config', '{"hide_settings":true}')
             self.send_header('Subscription-Userinfo', f"upload=0; download=0; total={total_bytes}; expire={exp_ts}")
             self.end_headers()
             self.wfile.write(servers.encode())
