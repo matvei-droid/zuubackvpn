@@ -38,5 +38,10 @@
     "status": "active",
     "expire": "2026-01-23",
     "total": 10737418240
+  },
+  "karen": {
+    "status": "active",
+    "expire": "2026-01-23",
+    "total": 10737418240
   }
 }
