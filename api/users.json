@@ -98,5 +98,10 @@
     "expires": "2026-01-23",
     "limit_gb": 100,
     "status": "active"
+  },
+  "kirill": {
+    "expires": "2026-02-22",
+    "limit_gb": 100,
+    "status": "active"
   }
 }
